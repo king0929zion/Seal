@@ -450,4 +450,86 @@
         <item quantity="one">%d audio</item>
         <item quantity="other">%d audios</item>
     </plurals>
+
+    <string name="ytdlp_advanced">yt-dlp options</string>
+    <string name="ytdlp_advanced_desc">Client impersonation, retries, filters, post-processing</string>
+    <string name="ytdlp_advanced_hint">These options are appended to every download request. Leave a field empty to keep the default behavior. Custom command templates bypass these settings.</string>
+    <string name="ytdlp_group_network">Network and connection</string>
+    <string name="ytdlp_group_selection">Selection and filtering</string>
+    <string name="ytdlp_group_files">Files and metadata</string>
+    <string name="ytdlp_group_post">Format and post-processing</string>
+
+    <string name="ytdlp_identity">Client identity</string>
+    <string name="ytdlp_identity_desc">Impersonation, referer, headers</string>
+    <string name="ytdlp_impersonate">Impersonate client (--impersonate)</string>
+    <string name="ytdlp_impersonate_desc">Mimic a browser TLS fingerprint, e.g. chrome. Requires curl-cffi support.</string>
+    <string name="ytdlp_referer">Referer URL (--referer)</string>
+    <string name="ytdlp_source_address">Source address (--source-address)</string>
+    <string name="ytdlp_source_address_desc">Bind outgoing traffic to an interface or IP address</string>
+    <string name="ytdlp_add_headers">Extra headers (--add-headers)</string>
+    <string name="ytdlp_add_headers_desc">One \"Key: Value\" pair per line, e.g. Accept-Language: en-US</string>
+
+    <string name="ytdlp_resilience">Retries and timeouts</string>
+    <string name="ytdlp_resilience_desc">Retry policy, timeouts, chunk size</string>
+    <string name="ytdlp_retries">Retries (-R)</string>
+    <string name="ytdlp_retries_desc">Number or \"infinite\"</string>
+    <string name="ytdlp_fragment_retries">Fragment retries</string>
+    <string name="ytdlp_retry_sleep">Retry sleep</string>
+    <string name="ytdlp_retry_sleep_desc">e.g. fragment:30 or exp:1:10</string>
+    <string name="ytdlp_socket_timeout">Socket timeout (s)</string>
+    <string name="ytdlp_http_chunk_size">HTTP chunk size</string>
+    <string name="ytdlp_http_chunk_size_desc">e.g. 10M, empty for default</string>
+
+    <string name="ytdlp_selection">Playlist and filters</string>
+    <string name="ytdlp_selection_desc">Range, match filter, file size, live</string>
+    <string name="ytdlp_playlist_start">Playlist start item</string>
+    <string name="ytdlp_playlist_end">Playlist end item</string>
+    <string name="ytdlp_match_filter">Match filter</string>
+    <string name="ytdlp_match_filter_desc">e.g. duration &lt; 600</string>
+    <string name="ytdlp_min_filesize">Min file size</string>
+    <string name="ytdlp_max_filesize">Max file size</string>
+    <string name="ytdlp_filesize_desc">e.g. 50M, 1.5G</string>
+    <string name="ytdlp_wait_for_video">Wait for video (s)</string>
+    <string name="ytdlp_wait_for_video_desc">e.g. 60 or 30-120 for scheduled streams</string>
+
+    <string name="ytdlp_no_check_certificate">Skip TLS verification</string>
+    <string name="ytdlp_no_check_certificate_desc">Pass --no-check-certificate. Insecure, use only when needed.</string>
+    <string name="ytdlp_geo_bypass">Bypass geographic restriction</string>
+    <string name="ytdlp_geo_bypass_desc">Pass --geo-bypass for geo-restricted videos</string>
+    <string name="ytdlp_live_from_start">Live from start</string>
+    <string name="ytdlp_live_from_start_desc">Download live streams from the start (--live-from-start)</string>
+    <string name="ytdlp_windows_filenames">Windows-compatible filenames</string>
+    <string name="ytdlp_windows_filenames_desc">Ignored when restricted filenames are enabled</string>
+    <string name="ytdlp_force_overwrite">Overwrite existing files</string>
+    <string name="ytdlp_force_overwrite_desc">Pass --force-overwrites instead of skipping</string>
+    <string name="ytdlp_write_info_json">Write info JSON sidecar</string>
+    <string name="ytdlp_write_info_json_desc">Save --write-info-json next to the download</string>
+    <string name="ytdlp_write_description">Write description sidecar</string>
+    <string name="ytdlp_write_description_desc">Save --write-description next to the download</string>
+    <string name="ytdlp_prefer_free_formats">Prefer free formats</string>
+    <string name="ytdlp_prefer_free_formats_desc">Pass --prefer-free-formats when sorting formats</string>
+    <string name="ytdlp_keep_video">Keep original video</string>
+    <string name="ytdlp_keep_video_desc">Keep the video file when extracting audio (--keep-video)</string>
+
+    <string name="ytdlp_postprocessing">Post-processing</string>
+    <string name="ytdlp_postprocessing_desc">Remux, recode, downloader and extractor args</string>
+    <string name="ytdlp_check_formats">Check formats</string>
+    <string name="ytdlp_check_formats_desc">Default, force check, or disable format checking</string>
+    <string name="ytdlp_check_formats_default">Default</string>
+    <string name="ytdlp_recode_video">Recode video (--recode-video)</string>
+    <string name="ytdlp_recode_video_desc">Container to recode into, e.g. mp4</string>
+    <string name="ytdlp_remux_video">Remux video (--remux-video)</string>
+    <string name="ytdlp_remux_video_desc">Container to remux into, e.g. mkv. Overrides the merge preset.</string>
+    <string name="ytdlp_pp_args">Postprocessor args</string>
+    <string name="ytdlp_pp_args_desc">e.g. ffmpeg:-crf 23 -preset fast</string>
+    <string name="ytdlp_downloader_args">External downloader args</string>
+    <string name="ytdlp_downloader_args_desc">e.g. aria2c:--max-connection-per-server=4</string>
+    <string name="ytdlp_extractor_args">Extractor args</string>
+    <string name="ytdlp_extractor_args_desc">e.g. youtube:player_client=android</string>
+    <string name="ytdlp_sponsorblock_mark">SponsorBlock mark</string>
+    <string name="ytdlp_sponsorblock_mark_desc">Mark instead of remove, e.g. all or sponsor,intro</string>
+
+    <string name="ytdlp_reset">Reset yt-dlp options</string>
+    <string name="ytdlp_reset_desc">Clear all fields on this page back to defaults</string>
+    <string name="ytdlp_reset_confirm">Clear all custom yt-dlp options?</string>
 </resources>

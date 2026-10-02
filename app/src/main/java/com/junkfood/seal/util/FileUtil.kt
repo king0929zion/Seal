@@ -20,6 +20,7 @@ import okhttp3.internal.closeQuietly
 const val AUDIO_REGEX = "(mp3|aac|opus|m4a)$"
 const val THUMBNAIL_REGEX = "\\.(jpg|png)$"
 const val SUBTITLE_REGEX = "\\.(lrc|vtt|srt|ass|json3|srv.|ttml)$"
+const val SIDECAR_REGEX = "\\.(info\\.json|description)$"
 private const val PRIVATE_DIRECTORY_SUFFIX = ".Seal"
 
 object FileUtil {
@@ -113,7 +114,9 @@ object FileUtil {
             .apply {
                 MediaScannerConnection.scanFile(context, this.toList().toTypedArray(), null, null)
                 removeAll {
-                    it.contains(Regex(THUMBNAIL_REGEX)) || it.contains(Regex(SUBTITLE_REGEX))
+                    it.contains(Regex(THUMBNAIL_REGEX)) ||
+                        it.contains(Regex(SUBTITLE_REGEX)) ||
+                        it.contains(Regex(SIDECAR_REGEX))
                 }
             }
 

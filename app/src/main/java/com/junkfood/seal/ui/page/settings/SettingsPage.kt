@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.BugReport
+import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.EnergySavingsLeaf
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.Info
@@ -193,6 +194,15 @@ fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
                         else Icons.Rounded.SignalWifi4Bar,
                 ) {
                     onNavigateTo(Route.NETWORK_PREFERENCES)
+                }
+            }
+            item {
+                SettingItem(
+                    title = stringResource(id = R.string.ytdlp_advanced),
+                    description = stringResource(id = R.string.ytdlp_advanced_desc),
+                    icon = Icons.Rounded.Download,
+                ) {
+                    onNavigateTo(Route.YTDLP_ADVANCED)
                 }
             }
             item {

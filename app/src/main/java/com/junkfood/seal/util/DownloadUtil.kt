@@ -116,6 +116,9 @@ object DownloadUtil {
                         addOption("--restrict-filenames")
                     }
                 }
+                applyAdvancedForInfoFetch(downloadPreferences.advanced)
+                mergeExtractorArgs(downloadPreferences.advanced.extractorArgsExtra)
+                    .forEach { addOption("--extractor-args", it) }
             }
             execute(request, playlistURL).out.run {
                 val playlistInfo = jsonFormat.decodeFromString<PlaylistResult>(this)
@@ -168,10 +171,16 @@ object DownloadUtil {
                     }*/
                     if (autoSubtitle) {
                         addOption("--write-auto-subs")
-                        if (!autoTranslatedSubtitles) {
-                            addOption("--extractor-args", "youtube:skip=translated_subs")
-                        }
                     }
+                    mergeExtractorArgs(
+                            if (autoSubtitle && !autoTranslatedSubtitles) {
+                                "youtube:skip=translated_subs"
+                            } else {
+                                ""
+                            },
+                            this@with.advanced.extractorArgsExtra,
+                        )
+                        .forEach { addOption("--extractor-args", it) }
                     if (playlistIndex != null) {
                         addOption("--playlist-items", playlistIndex)
                         addOption("--dump-json")
@@ -181,6 +190,7 @@ object DownloadUtil {
                     addOption("-R", "1")
                     addOption("--no-playlist")
                     addOption("--socket-timeout", "5")
+                    applyAdvancedForInfoFetch(this@with.advanced)
                 }
             return getVideoInfo(request, taskKey)
         }
@@ -239,6 +249,7 @@ object DownloadUtil {
         val forceIpv4: Boolean,
         val mergeAudioStream: Boolean,
         val mergeToMkv: Boolean,
+        val advanced: YtDlpAdvancedOptions = YtDlpAdvancedOptions(),
     ) {
         companion object {
             val EMPTY =
@@ -294,6 +305,7 @@ object DownloadUtil {
                     mergeAudioStream = false,
                     mergeToMkv = false,
                     useCustomAudioPreset = false,
+                    advanced = YtDlpAdvancedOptions(),
                 )
 
             fun createFromPreferences(): DownloadPreferences {
@@ -353,6 +365,7 @@ object DownloadUtil {
                     mergeAudioStream = false,
                     mergeToMkv =
                         (downloadSubtitle && embedSubtitle) || MERGE_OUTPUT_MKV.getBoolean(),
+                    advanced = YtDlpAdvancedOptions.fromPreferences(),
                 )
             }
         }
@@ -361,7 +374,7 @@ object DownloadUtil {
     private fun YoutubeDLRequest.enableCookies(userAgentString: String): YoutubeDLRequest =
         this.addOption("--cookies", context.getCookiesFile().absolutePath).apply {
             if (userAgentString.isNotEmpty()) {
-                addOption("--add-header", "User-Agent:$userAgentString")
+                addOption("--add-headers", "User-Agent:$userAgentString")
             }
         }
 
@@ -451,10 +464,16 @@ object DownloadUtil {
                 if (downloadSubtitle) {
                     if (autoSubtitle) {
                         addOption("--write-auto-subs")
-                        if (!autoTranslatedSubtitles) {
-                            addOption("--extractor-args", "youtube:skip=translated_subs")
-                        }
                     }
+                    mergeExtractorArgs(
+                            if (autoSubtitle && !autoTranslatedSubtitles) {
+                                "youtube:skip=translated_subs"
+                            } else {
+                                ""
+                            },
+                            advanced.extractorArgsExtra,
+                        )
+                        .forEach { addOption("--extractor-args", it) }
                     subtitleLanguage
                         .takeIf { it.isNotEmpty() }
                         ?.let { addOption("--sub-langs", it) }
@@ -569,10 +588,16 @@ object DownloadUtil {
 
                     if (autoSubtitle) {
                         addOption("--write-auto-subs")
-                        if (!autoTranslatedSubtitles) {
-                            addOption("--extractor-args", "youtube:skip=translated_subs")
-                        }
                     }
+                    mergeExtractorArgs(
+                            if (autoSubtitle && !autoTranslatedSubtitles) {
+                                "youtube:skip=translated_subs"
+                            } else {
+                                ""
+                            },
+                            advanced.extractorArgsExtra,
+                        )
+                        .forEach { addOption("--extractor-args", it) }
                     subtitleLanguage
                         .takeIf { it.isNotEmpty() }
                         ?.let { addOption("--sub-langs", it) }
@@ -702,8 +727,15 @@ object DownloadUtil {
                     }
                     if (useDownloadArchive) {
                         val archiveFile = context.getArchiveFile()
-                        val archiveFileContent = archiveFile.readText()
-                        if (archiveFileContent.contains("${videoInfo.extractor} ${videoInfo.id}")) {
+                        // Stream instead of readText(): archive.txt grows unbounded
+                        // over time and only a prefix match per line is needed.
+                        val alreadyArchived =
+                            runCatching {
+                                archiveFile.bufferedReader().useLines { lines ->
+                                    lines.any { it.contains("${videoInfo.extractor} ${videoInfo.id}") }
+                                }
+                            }.getOrDefault(false)
+                        if (alreadyArchived) {
                             return Result.failure(
                                 YoutubeDLException(
                                     context.getString(R.string.download_archive_error)
@@ -793,6 +825,12 @@ object DownloadUtil {
                         }
 
                     addOption("-o", outputBuilder.append(output).toString())
+
+                    applyAdvancedForDownload(
+                        advanced,
+                        isAudio = extractAudio || (videoInfo.vcodec == "none"),
+                        restrictFilenamesActive = restrictFilenames,
+                    )
 
                     for (s in request.buildCommand()) Log.d(TAG, s)
                 }

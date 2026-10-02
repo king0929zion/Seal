@@ -66,6 +66,7 @@ import com.junkfood.seal.ui.page.settings.network.NetworkPreferences
 import com.junkfood.seal.ui.page.settings.network.WebViewPage
 import com.junkfood.seal.ui.page.settings.troubleshooting.TroubleShootingPage
 import com.junkfood.seal.ui.page.videolist.VideoListPage
+import com.junkfood.seal.ui.page.settings.ytdlp.YtDlpAdvancedPreferences
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -244,6 +245,9 @@ fun NavGraphBuilder.settingsGraph(
             ) {
                 onNavigateBack()
             }
+        }
+        animatedComposable(Route.YTDLP_ADVANCED) {
+            YtDlpAdvancedPreferences { onNavigateBack() }
         }
         animatedComposable(Route.COOKIE_PROFILE) {
             CookieProfilePage(

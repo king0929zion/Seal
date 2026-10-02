@@ -38,6 +38,7 @@ import com.junkfood.seal.util.SDCARD_URI
 import com.junkfood.seal.util.UpdateUtil
 import com.junkfood.seal.util.VIDEO_DIRECTORY
 import com.junkfood.seal.util.YT_DLP_VERSION
+import com.junkfood.seal.util.YtDlpBundle
 import com.tencent.mmkv.MMKV
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
@@ -91,6 +92,10 @@ class App : Application() {
                 YoutubeDL.init(this@App)
                 FFmpeg.init(this@App)
                 Aria2c.init(this@App)
+                // Overwrite the library's yt-dlp copy with the build from the
+                // vendored source tree (tools/yt-dlp-packager) when bundled.
+                // No-op when this APK carries no bundle; OTA updater wins then.
+                YtDlpBundle.installIfNeeded(this@App)
                 DownloadUtil.getCookiesContentFromDatabase().getOrNull()?.let {
                     FileUtil.writeContentToFile(it, getCookiesFile())
                 }

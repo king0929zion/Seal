@@ -109,6 +109,40 @@ const val USE_CUSTOM_AUDIO_PRESET = "custom_audio_preset"
 
 const val MERGE_MULTI_AUDIO_STREAM = "multi_audio_stream"
 
+// region yt-dlp advanced options (YtDlpOptions.kt engine coverage, all default-off)
+const val YTDLP_IMPERSONATE = "ytdlp_impersonate"
+const val YTDLP_NO_CHECK_CERTIFICATE = "ytdlp_no_check_certificate"
+const val YTDLP_GEO_BYPASS = "ytdlp_geo_bypass"
+const val YTDLP_SOURCE_ADDRESS = "ytdlp_source_address"
+const val YTDLP_HTTP_CHUNK_SIZE = "ytdlp_http_chunk_size"
+const val YTDLP_REFERER = "ytdlp_referer"
+const val YTDLP_ADD_HEADERS = "ytdlp_add_headers"
+const val YTDLP_RETRIES = "ytdlp_retries"
+const val YTDLP_FRAGMENT_RETRIES = "ytdlp_fragment_retries"
+const val YTDLP_RETRY_SLEEP = "ytdlp_retry_sleep"
+const val YTDLP_SOCKET_TIMEOUT = "ytdlp_socket_timeout"
+const val YTDLP_PLAYLIST_START = "ytdlp_playlist_start"
+const val YTDLP_PLAYLIST_END = "ytdlp_playlist_end"
+const val YTDLP_MATCH_FILTER = "ytdlp_match_filter"
+const val YTDLP_MIN_FILESIZE = "ytdlp_min_filesize"
+const val YTDLP_MAX_FILESIZE = "ytdlp_max_filesize"
+const val YTDLP_LIVE_FROM_START = "ytdlp_live_from_start"
+const val YTDLP_WAIT_FOR_VIDEO = "ytdlp_wait_for_video"
+const val YTDLP_WINDOWS_FILENAMES = "ytdlp_windows_filenames"
+const val YTDLP_FORCE_OVERWRITE = "ytdlp_force_overwrite"
+const val YTDLP_WRITE_INFO_JSON = "ytdlp_write_info_json"
+const val YTDLP_WRITE_DESCRIPTION = "ytdlp_write_description"
+const val YTDLP_PREFER_FREE_FORMATS = "ytdlp_prefer_free_formats"
+const val YTDLP_CHECK_FORMATS = "ytdlp_check_formats"
+const val YTDLP_KEEP_VIDEO = "ytdlp_keep_video"
+const val YTDLP_RECODE_VIDEO = "ytdlp_recode_video"
+const val YTDLP_REMUX_VIDEO = "ytdlp_remux_video"
+const val YTDLP_PP_ARGS = "ytdlp_pp_args"
+const val YTDLP_DOWNLOADER_ARGS = "ytdlp_downloader_args"
+const val YTDLP_EXTRACTOR_ARGS_EXTRA = "ytdlp_extractor_args_extra"
+const val YTDLP_SPONSORBLOCK_MARK = "ytdlp_sponsorblock_mark"
+// endregion
+
 const val DOWNLOAD_TYPE_INITIALIZATION = "download_type_init"
 private const val DOWNLOAD_TYPE = "download_type"
 
@@ -271,6 +305,8 @@ object PreferenceUtil {
     fun String.updateLong(newLong: Long) = kv.encode(this, newLong)
 
     fun String.updateBoolean(newValue: Boolean) = kv.encode(this, newValue)
+
+    fun String.removeValue() = kv.removeValueForKey(this)
 
     fun updateValue(key: String, b: Boolean) = key.updateBoolean(b)
 
