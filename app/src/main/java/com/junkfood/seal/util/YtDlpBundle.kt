@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import com.junkfood.seal.App
 import com.junkfood.seal.BuildConfig
-import com.junkfood.seal.util.PreferenceUtil.encodeString
 import com.junkfood.seal.util.PreferenceUtil.getString
+import com.junkfood.seal.util.PreferenceUtil.updateString
 import com.yausername.youtubedl_android.YoutubeDL
 import java.io.File
 import java.security.MessageDigest
@@ -122,8 +122,8 @@ object YtDlpBundle {
                 tmp.delete()
             }
             target.setReadable(true, false)
-            BUNDLED_VERSION_INSTALLED.encodeString(assetVersion.ifEmpty { bundledVersion })
-            YT_DLP_VERSION.encodeString(assetVersion.ifEmpty { bundledVersion })
+            BUNDLED_VERSION_INSTALLED.updateString(assetVersion.ifEmpty { bundledVersion })
+            YT_DLP_VERSION.updateString(assetVersion.ifEmpty { bundledVersion })
             Log.i(TAG, "installed bundled yt-dlp $assetVersion ($size bytes)")
             InstallResult.Installed(assetVersion.ifEmpty { bundledVersion })
         }.getOrElse { th ->

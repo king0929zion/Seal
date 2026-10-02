@@ -361,8 +361,9 @@ fun PostprocessingDialog(onDismissRequest: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
         )
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            val defaultLabel = stringResource(R.string.ytdlp_check_formats_default)
             listOf(
-                "" to stringResource(R.string.ytdlp_check_formats_default),
+                "" to defaultLabel,
                 "select" to "check",
                 "no" to "no-check",
             ).forEach { (value, label) ->
