@@ -333,6 +333,7 @@ fun SelectionDialog(onDismissRequest: () -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostprocessingDialog(onDismissRequest: () -> Unit) {
+    val defaultLabel = stringResource(R.string.ytdlp_check_formats_default)
     var checkFormats by remember { mutableStateOf(YTDLP_CHECK_FORMATS.getString()) }
     var recodeVideo by remember { mutableStateOf(YTDLP_RECODE_VIDEO.getString()) }
     var remuxVideo by remember { mutableStateOf(YTDLP_REMUX_VIDEO.getString()) }
@@ -361,7 +362,6 @@ fun PostprocessingDialog(onDismissRequest: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
         )
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            val defaultLabel = stringResource(R.string.ytdlp_check_formats_default)
             listOf(
                 "" to defaultLabel,
                 "select" to "check",
