@@ -11,19 +11,21 @@ import com.junkfood.seal.util.isValidRetries
 import com.junkfood.seal.util.isWaitForVideoSpec
 import com.junkfood.seal.util.mergeExtractorArgs
 import com.junkfood.seal.util.normalizeRetries
+import com.junkfood.seal.util.resetWarnLogger
+import com.junkfood.seal.util.warnLogger
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 
 /**
  * Host-side tests for the vendored yt-dlp options layer ([YtDlpAdvancedOptions]).
  *
- * Only valid inputs are exercised here: invalid values are dropped with
- * `android.util.Log` warnings on-device, and `Log` is not mocked on the JVM.
- * Validation rules themselves are covered via [isFilesizeSpec] /
- * [isWaitForVideoSpec], which are pure functions.
+ * Engine warnings go through [warnLogger], which the tests silence because
+ * `android.util.Log` is a stub on the JVM.
  */
 class YtDlpOptionsTest {
 
@@ -32,6 +34,17 @@ class YtDlpOptionsTest {
     private fun List<String>.argAfter(flag: String): String? {
         val i = indexOf(flag)
         return if (i >= 0 && i + 1 < size) this[i + 1] else null
+    }
+
+    @Before
+    fun silenceAndroidLog() {
+        // android.util.Log is a stub on the JVM; route warnings nowhere.
+        warnLogger = { _, _ -> }
+    }
+
+    @After
+    fun restoreAndroidLog() {
+        resetWarnLogger()
     }
 
     @Test

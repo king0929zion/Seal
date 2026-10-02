@@ -224,6 +224,20 @@ data class YtDlpAdvancedOptions(
 
 private const val TAG = "YtDlpOptions"
 
+private fun androidWarn(tag: String, message: String) {
+    Log.w(tag, message)
+}
+
+/**
+ * Warning sink used by the options layer. Defaults to `Log.w`; unit tests
+ * replace it because `android.util.Log` is a stub on the JVM.
+ */
+internal var warnLogger: (tag: String, message: String) -> Unit = ::androidWarn
+
+internal fun resetWarnLogger() {
+    warnLogger = ::androidWarn
+}
+
 private val FILESIZE_RE = Regex("""^\d+(\.\d+)?[KMGTPE]?$""", RegexOption.IGNORE_CASE)
 private val WAIT_FOR_VIDEO_RE = Regex("""^\d+(-\d+)?$""")
 
@@ -290,7 +304,7 @@ internal fun mergeExtractorArgs(vararg specs: String): List<String> {
         if (spec.isEmpty()) continue
         val match = EXTRACTOR_ARG_SPEC_RE.matchEntire(spec)
         if (match == null || match.groupValues[2].trim().isEmpty()) {
-            Log.w(TAG, "ignoring malformed --extractor-args: $spec")
+            warnLogger(TAG, "ignoring malformed --extractor-args: $spec")
             continue
         }
         // Mirror upstream key normalization (options.py _extractor_arg_parser).
@@ -361,7 +375,7 @@ fun YoutubeDLRequest.applyAdvancedForDownload(
             if (isFilesizeSpec(advanced.httpChunkSize)) {
                 addOption("--http-chunk-size", advanced.httpChunkSize.trim())
             } else {
-                Log.w(TAG, "ignoring invalid --http-chunk-size: ${advanced.httpChunkSize}")
+                warnLogger(TAG, "ignoring invalid --http-chunk-size: ${advanced.httpChunkSize}")
             }
         }
         normalizeRetries(advanced.fragmentRetries)?.let { addOption("--fragment-retries", it) }
@@ -374,14 +388,14 @@ fun YoutubeDLRequest.applyAdvancedForDownload(
             if (isFilesizeSpec(advanced.minFilesize)) {
                 addOption("--min-filesize", advanced.minFilesize.trim())
             } else {
-                Log.w(TAG, "ignoring invalid --min-filesize: ${advanced.minFilesize}")
+                warnLogger(TAG, "ignoring invalid --min-filesize: ${advanced.minFilesize}")
             }
         }
         if (advanced.maxFilesize.isNotBlank()) {
             if (isFilesizeSpec(advanced.maxFilesize)) {
                 addOption("--max-filesize", advanced.maxFilesize.trim())
             } else {
-                Log.w(TAG, "ignoring invalid --max-filesize: ${advanced.maxFilesize}")
+                warnLogger(TAG, "ignoring invalid --max-filesize: ${advanced.maxFilesize}")
             }
         }
         if (advanced.liveFromStart) addOption("--live-from-start")
@@ -389,7 +403,7 @@ fun YoutubeDLRequest.applyAdvancedForDownload(
             if (isWaitForVideoSpec(advanced.waitForVideo)) {
                 addOption("--wait-for-video", advanced.waitForVideo.trim())
             } else {
-                Log.w(TAG, "ignoring invalid --wait-for-video: ${advanced.waitForVideo}")
+                warnLogger(TAG, "ignoring invalid --wait-for-video: ${advanced.waitForVideo}")
             }
         }
 
